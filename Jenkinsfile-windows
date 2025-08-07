@@ -16,29 +16,29 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installing npm dependencies...'
-                sh 'npm ci'
+                bat 'npm ci'
             }
         }
         
         stage('Start Application') {
             steps {
                 echo 'Starting the application...'
-                sh 'npm start &'
-                sh 'sleep 15'
+                bat 'start /B npm start'
+                bat 'timeout /t 15 /nobreak'
             }
         }
         
         stage('Run Tests') {
             steps {
                 echo 'Running test suite...'
-                sh 'npm test'
+                bat 'npm test'
             }
         }
         
         stage('Cleanup') {
             steps {
                 echo 'Cleaning up processes...'
-                sh 'pkill -f "node index.js" || true'
+                bat 'taskkill /f /im node.exe 2>nul || exit 0'
             }
         }
     }
@@ -46,7 +46,7 @@ pipeline {
     post {
         always {
             echo 'Pipeline completed'
-            sh 'pkill -f "node index.js" || true'
+            bat 'taskkill /f /im node.exe 2>nul || exit 0'
         }
         success {
             echo 'Pipeline succeeded!'
