@@ -24,7 +24,7 @@ pipeline {
             steps {
                 echo 'Starting the application...'
                 bat 'start /B npm start'
-                bat 'timeout /t 15 /nobreak'
+                bat 'ping -n 15 127.0.0.1 > nul'
             }
         }
         
