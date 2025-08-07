@@ -20,25 +20,10 @@ pipeline {
             }
         }
         
-        stage('Start Application') {
-            steps {
-                echo 'Starting the application...'
-                bat 'start /B cmd /c "npm start"'
-                bat 'ping -n 15 127.0.0.1 > nul'
-            }
-        }
-        
         stage('Run Tests') {
             steps {
                 echo 'Running test suite...'
                 bat 'npm test'
-            }
-        }
-        
-        stage('Cleanup') {
-            steps {
-                echo 'Cleaning up processes...'
-                bat 'taskkill /f /im node.exe 2>nul || exit 0'
             }
         }
     }
@@ -46,7 +31,6 @@ pipeline {
     post {
         always {
             echo 'Pipeline completed'
-            bat 'taskkill /f /im node.exe 2>nul || exit 0'
         }
         success {
             echo 'Pipeline succeeded!'
